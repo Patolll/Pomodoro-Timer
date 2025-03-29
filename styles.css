@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap");
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: "Winky Sans", sans-serif;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(54, 96, 123);
+  color: white;
+  min-height: 100vh;
+}
+.main-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.header-wrapper {
+  width: 90%;
+  font-size: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.buttons-cont {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+  align-items: center;
+}
+.header-buttons {
+  border: none;
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 50%;
+  height: 100%;
+}
+.header-buttons:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.timer-wrapper {
+  background-color: rgba(255, 255, 255, 0.09);
+  margin-top: 5%;
+  padding-bottom: 5%;
+  width: 90%;
+  border-radius: 5px;
+}
+.timer-title {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 2%;
+}
+button {
+  font-family: "Winky Sans", sans-serif;
+}
+.timer-buttons {
+  border: none;
+  font-size: 1.1rem;
+  background-color: rgba(255, 255, 255, 0);
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.timer-buttons:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.timer-result,
+.timer-bottom-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 6rem;
+}
+.timer-result p {
+  margin: 0;
+}
+.timer-bottom-buttons {
+  gap: 10%;
+}
+
+.start-button {
+  border: none;
+  font-size: 2rem;
+  border-radius: 5px;
+  background-color: white;
+  width: 60%;
+  height: 7vh;
+}
+
+.skip-button {
+  border: none;
+  background-color: rgb(255, 255, 255, 0);
+}
+.to-do-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.to-do-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.to-do-button {
+  width: 90%;
+  border-radius: 5px;
+  border: dashed 3px;
+  background-color: rgb(255, 255, 255, 0.2);
+  font-size: 2rem;
+  color: rgb(255, 255, 255, 0.5);
+}
+hr {
+  width: 90%;
+  border-radius: 3px;
+  color: white;
+  border-color: white;
+  border: 2px solid;
+}
+footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 30vh;
+  background-color: rgb(84, 84, 84);
+}
