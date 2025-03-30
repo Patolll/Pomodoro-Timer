@@ -96,7 +96,7 @@ button {
   border-radius: 5px;
   background-color: white;
   width: 60%;
-  height: 7vh;
+  height: 100%;
 }
 
 .skip-button {
@@ -128,6 +128,36 @@ hr {
   color: white;
   border-color: white;
   border: 2px solid;
+}
+aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.pomodoro-desc,
+.how-to,
+.features,
+.end-msg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+}
+.pomodoro-desc p,
+.how-to li,
+.features li {
+  font-size: 1.2rem;
+}
+.pomodoro-desc,
+.end-msg {
+  padding-left: 2%;
+  width: 80%;
+}
+.link {
+  font-weight: 600;
+  color: green;
 }
 footer {
   margin-top: auto;
