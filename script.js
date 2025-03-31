@@ -63,11 +63,10 @@ function update() {
         document.getElementById("longBreakCount").textContent = longBreak;
         break;
     }
-    nextSession();
-    clearInterval(timer);
-    pomodoroTimer.textContent = "00:00";
-    isRunning = false;
 
+    clearInterval(timer);
+    isRunning = false;
+    nextSession();
     return;
   }
 
