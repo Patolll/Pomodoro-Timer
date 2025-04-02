@@ -1,9 +1,15 @@
+const toDoBtn = document.getElementById("to-do-Btn");
 const pomodoroTimer = document.getElementById("timer");
+const addBox = document.getElementById("add-to-do-task");
+const toDoAddBtn = document.getElementById("to-do-add-Btn");
+const addInput = document.getElementById("to-do-input");
+const ulList = document.getElementById("ulList");
+
 let startTime;
 let timer = null;
 let remainingTime = 0;
 let isRunning = false;
-let timerTime = 25; // Default Pomodoro time (25 minutes)
+let timerTime = 25;
 let pomodoro = 0;
 let shortBreak = 0;
 let longBreak = 0;
@@ -88,37 +94,51 @@ function resetTimer() {
 }
 
 function nextSession() {
-  // Sprawdzamy, która sesja była zakończona i ustawiamy kolejną
   if (timerTime === 25) {
-    // Po Pomodoro (25 minut), sprawdzamy czy już minęły 4 sesje
     if (pomodoro % 4 === 0) {
-      // Po czterech Pomodoro przechodzimy na długą przerwę (15 minut)
-      timerTime = 15; // Długa przerwa (15 minut)
+      timerTime = 15;
     } else {
-      // W przeciwnym razie krótka przerwa (5 minut)
-      timerTime = 5; // Krótka przerwa (5 minut)
+      timerTime = 5;
     }
   } else if (timerTime === 5) {
-    // Po krótkiej przerwie wracamy do Pomodoro (25 minut)
     timerTime = 25;
   } else if (timerTime === 15) {
-    // Po długiej przerwie wracamy do Pomodoro (25 minut)
     timerTime = 25;
   }
 
-  // Zmiana klasy przycisku i wyświetlanie odpowiedniej liczby
   buttons.forEach((btn) => {
     btn.classList.remove("workingBtn");
     if (btn.classList.contains("work") && timerTime === 25) {
-      btn.classList.add("workingBtn"); // Przycisk Pomodoro
+      btn.classList.add("workingBtn");
     } else if (btn.classList.contains("short") && timerTime === 5) {
-      btn.classList.add("workingBtn"); // Przycisk krótkiej przerwy
+      btn.classList.add("workingBtn");
     } else if (btn.classList.contains("long") && timerTime === 15) {
-      btn.classList.add("workingBtn"); // Przycisk długiej przerwy
+      btn.classList.add("workingBtn");
     }
   });
 
-  // Ustawienie nowego startu timera na odpowiednią sesję
   resetTimer();
   startTime = Date.now() + 1000 * 60 * timerTime;
+}
+
+toDoBtn.addEventListener("click", () => {
+  if (addBox.style.display === "") {
+    addBox.style.display = "flex";
+  } else {
+    console.error("Add box is already displayed");
+  }
+});
+toDoAddBtn.addEventListener("click", () => {
+  const elementText = addInput.value.trim();
+  if (addInput.value !== "") {
+    addInput.value = elementText;
+    createElement(elementText);
+    addInput.value = "";
+  }
+});
+
+function createElement(inputValue) {
+  const li = document.createElement("li");
+  li.textContent = inputValue;
+  ulList.appendChild(li);
 }
