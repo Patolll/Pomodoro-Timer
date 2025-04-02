@@ -44,8 +44,9 @@ function start() {
     isRunning = true;
     startBtn.textContent = "PAUSE";
   } else if (isRunning) {
-    clearInterval(timer);
     isRunning = false;
+    clearInterval(timer);
+
     startBtn.textContent = "START";
   }
 }
@@ -122,7 +123,7 @@ function nextSession() {
 }
 
 toDoBtn.addEventListener("click", () => {
-  if (addBox.style.display === "") {
+  if (addBox.style.display !== "flex") {
     addBox.style.display = "flex";
   } else {
     console.error("Add box is already displayed");
@@ -134,11 +135,35 @@ toDoAddBtn.addEventListener("click", () => {
     addInput.value = elementText;
     createElement(elementText);
     addInput.value = "";
+    addBox.style.display = "none";
   }
 });
 
 function createElement(inputValue) {
+  const textDiv = document.createElement("div");
   const li = document.createElement("li");
-  li.textContent = inputValue;
+  textDiv.classList.add("textDiv");
+  textDiv.textContent = inputValue;
+  li.appendChild(textDiv);
+  createCheckmark(li, textDiv);
   ulList.appendChild(li);
+}
+function createCheckmark(liAppend, textDiv) {
+  const label = document.createElement("label");
+  const input = document.createElement("input");
+  const div = document.createElement("div");
+
+  label.classList.add("container");
+  div.classList.add("checkmark");
+
+  input.type = "checkbox";
+  label.appendChild(input);
+  label.appendChild(div);
+  liAppend.appendChild(label);
+  input.addEventListener("change", () => {
+    textDiv.classList.toggle("marked");
+    console.log(liAppend);
+    liAppend.classList.toggle("liColorChange");
+    console.log(liAppend);
+  });
 }
