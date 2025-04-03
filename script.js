@@ -121,6 +121,10 @@ function nextSession() {
 toDoBtn.addEventListener("click", () => {
   if (addBox.style.display !== "flex") {
     addBox.style.display = "flex";
+    addBox.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
   } else {
     console.error("Add box is already displayed");
   }
