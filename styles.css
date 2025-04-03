@@ -43,6 +43,7 @@ main {
   background-color: rgba(255, 255, 255, 0.3);
   width: auto;
   padding: 10px;
+  color: white;
   height: 5vh;
 }
 .header-buttons:hover {
@@ -164,6 +165,7 @@ button {
   color: black;
   margin: 5px 0;
   border-radius: 5px;
+  transition: all 0.3s ease;
 }
 .liColorChange {
   background-color: rgb(204, 204, 103) !important;
@@ -229,8 +231,8 @@ button {
   position: relative;
   top: 0;
   left: 0;
-  height: 1.3em;
-  width: 1.3em;
+  height: 1.5em;
+  width: 1.5em;
   background-color: #7684ea;
   border-radius: 50%;
   transition: 300ms;
@@ -259,8 +261,8 @@ button {
 
 /* Style the checkmark/indicator */
 .container .checkmark:after {
-  left: 0.45em;
-  top: 0.25em;
+  left: 0.55em;
+  top: 0.35em;
   width: 0.25em;
   height: 0.5em;
   border: solid #e0e0e2;
@@ -286,6 +288,51 @@ button {
     box-shadow: 0 0 0 13px #0b6e4f30;
     rotate: 0;
   }
+}
+/* From Uiverse.io by vinodjangid07 */
+.bin-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 15px;
+  background-color: rgb(255, 95, 95);
+  cursor: pointer;
+  border: 3px solid rgb(255, 201, 201);
+  transition-duration: 0.3s;
+}
+.bin-bottom {
+  width: 15px;
+}
+.bin-top {
+  width: 17px;
+  transform-origin: right;
+  transition-duration: 0.3s;
+}
+.bin-button:hover .bin-top {
+  transform: rotate(45deg);
+}
+.bin-button:hover {
+  background-color: rgb(255, 0, 0);
+}
+.bin-button:active {
+  transform: scale(0.9);
+}
+.btnsDiv {
+  display: flex;
+  gap: 4%;
+  align-items: center;
+}
+@keyframes remove {
+  to {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+}
+.remove-animation {
+  animation: remove 0.5s forwards;
 }
 hr {
   width: 90%;
