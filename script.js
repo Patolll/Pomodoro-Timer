@@ -5,7 +5,9 @@ const toDoAddBtn = document.getElementById("to-do-add-Btn");
 const addInput = document.getElementById("to-do-input");
 const ulList = document.getElementById("ulList");
 const skipBtn = document.getElementById("skipBtn");
-
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsBox = document.getElementById("settings");
+const settingsClose = document.getElementById("settingsClose");
 let timer = null;
 let isRunning = false;
 let timerTime = 25;
@@ -211,3 +213,13 @@ function createDelete(btnsDiv, li) {
     setTimeout(() => li.remove(), 300);
   });
 }
+settingsBtn.addEventListener("click", () => {
+  if (settingsBox.style.display !== "block") {
+    settingsBox.style.display = "block";
+  }
+});
+settingsClose.addEventListener("click", () => {
+  if (settingsBox.style.display === "block") {
+    settingsBox.style.display = "";
+  }
+});
