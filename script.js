@@ -8,15 +8,45 @@ const skipBtn = document.getElementById("skipBtn");
 const settingsBtn = document.getElementById("settingsBtn");
 const settingsBox = document.getElementById("settings");
 const settingsClose = document.getElementById("settingsClose");
+const alarmSound = new Audio("alarm.mp3");
+const confirmBtn = document.getElementById("confirm-settings-btn");
 let timer = null;
 let isRunning = false;
-let timerTime = 25;
-let remainingTime = timerTime * 60;
+
+let pomodoroTime = 25;
+let shortTime = 5;
+let longTime = 15;
+let remainingTime;
 let pomodoro = 0;
 let shortBreak = 0;
 let longBreak = 0;
+confirmBtn.addEventListener("click", () => {
+  let pomodoroNew = Number(document.getElementById("pomodoro-session").value);
+  let shortNew = Number(document.getElementById("short-session").value);
+  let longNew = Number(document.getElementById("long-session").value);
 
-pomodoroTimer.textContent = formatTime(remainingTime);
+  if (!isNaN(pomodoroNew) && pomodoroNew > 0) {
+    pomodoroTime = pomodoroNew;
+  }
+  if (!isNaN(shortNew) && shortNew > 0) {
+    shortTime = shortNew;
+  }
+  if (!isNaN(longNew) && longNew > 0) {
+    longTime = longNew;
+  }
+
+  // Sprawdzamy, która sesja jest aktywna i ustawiamy remainingTime zgodnie z nią
+  if (document.querySelector(".work.workingBtn")) {
+    remainingTime = pomodoroTime * 60;
+  } else if (document.querySelector(".short.workingBtn")) {
+    remainingTime = shortTime * 60;
+  } else if (document.querySelector(".long.workingBtn")) {
+    remainingTime = longTime * 60;
+  }
+
+  pomodoroTimer.textContent = formatTime(remainingTime);
+  settingsBox.style.display = "none";
+});
 
 let startBtn = document.getElementById("startBtn");
 startBtn.addEventListener("click", start);
@@ -24,19 +54,15 @@ startBtn.addEventListener("click", start);
 const buttons = document.querySelectorAll(".timer-buttons");
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
-    buttons.forEach((btn) => {
-      btn.classList.remove("workingBtn");
-    });
+    buttons.forEach((btn) => btn.classList.remove("workingBtn"));
     if (button.classList.contains("work")) {
-      timerTime = 25; // Pomodoro (25 minutes)
+      remainingTime = pomodoroTime * 60;
     } else if (button.classList.contains("short")) {
-      timerTime = 5; // Short break (5 minutes)
+      remainingTime = shortTime * 60;
     } else if (button.classList.contains("long")) {
-      timerTime = 15; // Long break (15 minutes)
+      remainingTime = longTime * 60;
     }
-    resetTimer();
-    startTime = Date.now() + 1000 * 60 * timerTime;
-    pomodoroTimer.textContent = `${String(timerTime).padStart(2, "0")}:00`;
+    pomodoroTimer.textContent = formatTime(remainingTime);
     button.classList.add("workingBtn");
   });
 });
@@ -66,21 +92,19 @@ function update() {
     remainingTime--;
     pomodoroTimer.textContent = formatTime(remainingTime);
   } else {
-    switch (timerTime) {
-      case 25:
-        pomodoro++;
-        document.getElementById("pomodoroCount").textContent = pomodoro;
-        break;
-      case 5:
-        shortBreak++;
-        document.getElementById("shortBreakCount").textContent = shortBreak;
-        break;
-      case 15:
-        longBreak++;
-        document.getElementById("longBreakCount").textContent = longBreak;
-        break;
+    if (remainingTime === pomodoroTime * 60) {
+      alarmSound.play();
+      pomodoro++;
+      document.getElementById("pomodoroCount").textContent = pomodoro;
+    } else if (remainingTime === shortTime * 60) {
+      alarmSound.play();
+      shortBreak++;
+      document.getElementById("shortBreakCount").textContent = shortBreak;
+    } else if (remainingTime === longTime * 60) {
+      alarmSound.play();
+      longBreak++;
+      document.getElementById("longBreakCount").textContent = longBreak;
     }
-
     nextSession();
   }
 }
@@ -89,30 +113,41 @@ function resetTimer() {
   clearInterval(timer);
   isRunning = false;
   startBtn.textContent = "START";
-  remainingTime = timerTime * 60;
+  if (document.querySelector(".work.workingBtn")) {
+    remainingTime = pomodoroTime * 60; // Sesja pracy
+  } else if (document.querySelector(".short.workingBtn")) {
+    remainingTime = shortTime * 60; // Krótka przerwa
+  } else if (document.querySelector(".long.workingBtn")) {
+    remainingTime = longTime * 60; // Długa przerwa
+  }
   pomodoroTimer.textContent = formatTime(remainingTime);
 }
 
 function nextSession() {
-  if (timerTime === 25) {
+  if (remainingTime === 0) {
     if (pomodoro % 4 === 0) {
-      timerTime = 15;
+      remainingTime = longTime * 60;
     } else {
-      timerTime = 5;
+      remainingTime = shortTime * 60;
     }
-  } else if (timerTime === 5) {
-    timerTime = 25;
-  } else if (timerTime === 15) {
-    timerTime = 25;
+    pomodoroTimer.textContent = formatTime(remainingTime);
+  } else {
+    remainingTime = pomodoroTime * 60;
+    pomodoroTimer.textContent = formatTime(remainingTime);
   }
-
   buttons.forEach((btn) => {
     btn.classList.remove("workingBtn");
-    if (btn.classList.contains("work") && timerTime === 25) {
+    if (btn.classList.contains("work") && remainingTime === pomodoroTime * 60) {
       btn.classList.add("workingBtn");
-    } else if (btn.classList.contains("short") && timerTime === 5) {
+    } else if (
+      btn.classList.contains("short") &&
+      remainingTime === shortTime * 60
+    ) {
       btn.classList.add("workingBtn");
-    } else if (btn.classList.contains("long") && timerTime === 15) {
+    } else if (
+      btn.classList.contains("long") &&
+      remainingTime === longTime * 60
+    ) {
       btn.classList.add("workingBtn");
     }
   });
@@ -174,22 +209,45 @@ function createCheckmark(liAppend, btnsDiv, textDiv) {
   });
 }
 skipBtn.addEventListener("click", () => {
-  switch (timerTime) {
-    case 25:
-      pomodoro++;
-      document.getElementById("pomodoroCount").textContent = pomodoro;
-      break;
-    case 5:
-      shortBreak++;
-      document.getElementById("shortBreakCount").textContent = shortBreak;
-      break;
-    case 15:
-      longBreak++;
-      document.getElementById("longBreakCount").textContent = longBreak;
-      break;
+  if (document.querySelector(".work.workingBtn")) {
+    // Jeśli aktywna jest sesja pracy (pomodoro)
+    pomodoro++;
+    document.getElementById("pomodoroCount").textContent = pomodoro;
+    remainingTime = shortTime * 60; // Ustaw czas na krótką przerwę
+  } else if (document.querySelector(".short.workingBtn")) {
+    // Jeśli aktywna jest sesja krótkiej przerwy
+    shortBreak++;
+    document.getElementById("shortBreakCount").textContent = shortBreak;
+    remainingTime = pomodoroTime * 60; // Ustaw czas na sesję pracy
+  } else if (document.querySelector(".long.workingBtn")) {
+    // Jeśli aktywna jest sesja długiej przerwy
+    longBreak++;
+    document.getElementById("longBreakCount").textContent = longBreak;
+    remainingTime = pomodoroTime * 60; // Ustaw czas na sesję pracy
   }
-  nextSession();
+
+  // Zaktualizuj wyświetlanie czasu
+  pomodoroTimer.textContent = formatTime(remainingTime);
+
+  // Ustaw odpowiednią klasę aktywnej sesji
+  buttons.forEach((btn) => {
+    btn.classList.remove("workingBtn");
+    if (btn.classList.contains("work") && remainingTime === pomodoroTime * 60) {
+      btn.classList.add("workingBtn");
+    } else if (
+      btn.classList.contains("short") &&
+      remainingTime === shortTime * 60
+    ) {
+      btn.classList.add("workingBtn");
+    } else if (
+      btn.classList.contains("long") &&
+      remainingTime === longTime * 60
+    ) {
+      btn.classList.add("workingBtn");
+    }
+  });
 });
+
 function createDelete(btnsDiv, li) {
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("bin-button");

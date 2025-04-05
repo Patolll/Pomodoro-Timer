@@ -279,7 +279,36 @@ button {
     opacity: 1;
   }
 }
-
+.pomodoro-timer-settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.pomodoro-timer-settings input {
+  width: 50%;
+}
+.settings-columns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.confirm-cont {
+  bottom: 5%;
+  position: absolute;
+  right: 5%;
+}
+#confirm-settings-btn {
+  width: 150px;
+  height: 40px;
+  border: none;
+  background-color: #29a880;
+  color: white;
+}
+#confirm-settings-btn:hover {
+  background-color: hsl(161, 61%, 31%);
+}
 #add-to-do-task button {
   height: 50%;
   border-radius: 5px;
