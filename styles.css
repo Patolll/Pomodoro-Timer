@@ -25,6 +25,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 1%;
 }
 .title {
   display: flex;
@@ -55,6 +56,7 @@ main {
   padding-bottom: 5%;
   width: 90%;
   border-radius: 5px;
+  height: 30vh;
 }
 .timer-title {
   display: flex;
@@ -85,15 +87,16 @@ button {
 .timer-result,
 .timer-bottom-buttons {
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-size: 6rem;
+  justify-content: center;
 }
 .timer-result p {
-  margin: 0;
+  margin: 5%;
+  font-size: 6rem;
 }
 .timer-bottom-buttons {
   gap: 10%;
+  margin-top: 10%;
 }
 
 .start-button {
@@ -208,6 +211,8 @@ button {
   color: black;
   display: none;
   animation: smooth-appear 0.5s ease forwards;
+  font-size: 1.1rem;
+  z-index: 1;
 }
 @keyframes smooth-appear {
   from {
@@ -299,12 +304,14 @@ button {
   position: absolute;
   right: 5%;
 }
+
 #confirm-settings-btn {
   width: 150px;
   height: 40px;
   border: none;
   background-color: #29a880;
   color: white;
+  border-radius: 5px;
 }
 #confirm-settings-btn:hover {
   background-color: hsl(161, 61%, 31%);
@@ -322,6 +329,23 @@ button {
   font-size: 1rem;
   width: 60%;
   border-radius: 5px;
+}
+.select-sound-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 5%;
+  margin-top: 5%;
+}
+select {
+  width: 40%;
+  padding: 10px 0;
+  border: none;
+  background-color: #696969;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
 }
 /* From Uiverse.io by bociKond */
 /* Hide the default checkbox */
@@ -512,7 +536,6 @@ footer {
 @media (min-width: 1200px) {
   .timer-wrapper {
     width: 40%;
-    height: 30vh;
   }
   .timer-result,
   .timer-bottom-buttons {
@@ -524,6 +547,11 @@ footer {
 }
 @media (max-width: 400px) {
   .timer-result {
-    font-size: 3rem;
+    font-size: 4rem;
+  }
+}
+@media (min-width: 800px) {
+  .settings {
+    width: 35%;
   }
 }

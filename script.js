@@ -20,7 +20,11 @@ let remainingTime;
 let pomodoro = 0;
 let shortBreak = 0;
 let longBreak = 0;
+
+remainingTime = pomodoroTime * 60;
 confirmBtn.addEventListener("click", () => {
+  let select = document.querySelector("select");
+  let selectedValue = select.value;
   let pomodoroNew = Number(document.getElementById("pomodoro-session").value);
   let shortNew = Number(document.getElementById("short-session").value);
   let longNew = Number(document.getElementById("long-session").value);
@@ -35,7 +39,6 @@ confirmBtn.addEventListener("click", () => {
     longTime = longNew;
   }
 
-  // Sprawdzamy, która sesja jest aktywna i ustawiamy remainingTime zgodnie z nią
   if (document.querySelector(".work.workingBtn")) {
     remainingTime = pomodoroTime * 60;
   } else if (document.querySelector(".short.workingBtn")) {
@@ -43,9 +46,16 @@ confirmBtn.addEventListener("click", () => {
   } else if (document.querySelector(".long.workingBtn")) {
     remainingTime = longTime * 60;
   }
-
+  if (selectedValue === "classic") {
+    alarmSound.src = "alarm.mp3";
+  } else if (selectedValue === "digital") {
+    alarmSound.src = "digitalAlarm.mp3";
+  }
   pomodoroTimer.textContent = formatTime(remainingTime);
   settingsBox.style.display = "none";
+  document.getElementById("pomodoro-session").value = "";
+  document.getElementById("short-session").value = "";
+  document.getElementById("long-session").value = "";
 });
 
 let startBtn = document.getElementById("startBtn");
@@ -54,6 +64,7 @@ startBtn.addEventListener("click", start);
 const buttons = document.querySelectorAll(".timer-buttons");
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
+    resetTimer();
     buttons.forEach((btn) => btn.classList.remove("workingBtn"));
     if (button.classList.contains("work")) {
       remainingTime = pomodoroTime * 60;
@@ -92,20 +103,8 @@ function update() {
     remainingTime--;
     pomodoroTimer.textContent = formatTime(remainingTime);
   } else {
-    if (remainingTime === pomodoroTime * 60) {
-      alarmSound.play();
-      pomodoro++;
-      document.getElementById("pomodoroCount").textContent = pomodoro;
-    } else if (remainingTime === shortTime * 60) {
-      alarmSound.play();
-      shortBreak++;
-      document.getElementById("shortBreakCount").textContent = shortBreak;
-    } else if (remainingTime === longTime * 60) {
-      alarmSound.play();
-      longBreak++;
-      document.getElementById("longBreakCount").textContent = longBreak;
-    }
-    nextSession();
+    alarmSound.play();
+    nextSession(); // Po zakończeniu sesji przechodzimy do kolejnej
   }
 }
 
@@ -122,21 +121,29 @@ function resetTimer() {
   }
   pomodoroTimer.textContent = formatTime(remainingTime);
 }
-
 function nextSession() {
-  if (remainingTime === 0) {
+  if (document.querySelector(".work.workingBtn")) {
+    pomodoro++;
+    document.getElementById("pomodoroCount").textContent = pomodoro;
     if (pomodoro % 4 === 0) {
       remainingTime = longTime * 60;
     } else {
       remainingTime = shortTime * 60;
     }
-    pomodoroTimer.textContent = formatTime(remainingTime);
-  } else {
+  } else if (document.querySelector(".short.workingBtn")) {
+    shortBreak++;
+    document.getElementById("shortBreakCount").textContent = shortBreak;
     remainingTime = pomodoroTime * 60;
-    pomodoroTimer.textContent = formatTime(remainingTime);
+  } else if (document.querySelector(".long.workingBtn")) {
+    longBreak++;
+    document.getElementById("longBreakCount").textContent = longBreak;
+    remainingTime = pomodoroTime * 60;
   }
+  pomodoroTimer.textContent = formatTime(remainingTime);
+
   buttons.forEach((btn) => {
     btn.classList.remove("workingBtn");
+
     if (btn.classList.contains("work") && remainingTime === pomodoroTime * 60) {
       btn.classList.add("workingBtn");
     } else if (
@@ -151,7 +158,6 @@ function nextSession() {
       btn.classList.add("workingBtn");
     }
   });
-
   resetTimer();
 }
 
@@ -209,43 +215,13 @@ function createCheckmark(liAppend, btnsDiv, textDiv) {
   });
 }
 skipBtn.addEventListener("click", () => {
-  if (document.querySelector(".work.workingBtn")) {
-    // Jeśli aktywna jest sesja pracy (pomodoro)
-    pomodoro++;
-    document.getElementById("pomodoroCount").textContent = pomodoro;
-    remainingTime = shortTime * 60; // Ustaw czas na krótką przerwę
-  } else if (document.querySelector(".short.workingBtn")) {
-    // Jeśli aktywna jest sesja krótkiej przerwy
-    shortBreak++;
-    document.getElementById("shortBreakCount").textContent = shortBreak;
-    remainingTime = pomodoroTime * 60; // Ustaw czas na sesję pracy
-  } else if (document.querySelector(".long.workingBtn")) {
-    // Jeśli aktywna jest sesja długiej przerwy
-    longBreak++;
-    document.getElementById("longBreakCount").textContent = longBreak;
-    remainingTime = pomodoroTime * 60; // Ustaw czas na sesję pracy
-  }
+  clearInterval(timer);
+  isRunning = false;
+  startBtn.textContent = "START";
 
-  // Zaktualizuj wyświetlanie czasu
+  nextSession();
+
   pomodoroTimer.textContent = formatTime(remainingTime);
-
-  // Ustaw odpowiednią klasę aktywnej sesji
-  buttons.forEach((btn) => {
-    btn.classList.remove("workingBtn");
-    if (btn.classList.contains("work") && remainingTime === pomodoroTime * 60) {
-      btn.classList.add("workingBtn");
-    } else if (
-      btn.classList.contains("short") &&
-      remainingTime === shortTime * 60
-    ) {
-      btn.classList.add("workingBtn");
-    } else if (
-      btn.classList.contains("long") &&
-      remainingTime === longTime * 60
-    ) {
-      btn.classList.add("workingBtn");
-    }
-  });
 });
 
 function createDelete(btnsDiv, li) {
