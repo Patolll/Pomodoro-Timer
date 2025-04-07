@@ -10,6 +10,8 @@ const settingsBox = document.getElementById("settings");
 const settingsClose = document.getElementById("settingsClose");
 const alarmSound = new Audio("alarm.mp3");
 const confirmBtn = document.getElementById("confirm-settings-btn");
+const colorInput = document.getElementById("colorInput");
+const main = document.getElementById("main-section");
 let timer = null;
 let isRunning = false;
 
@@ -56,6 +58,7 @@ confirmBtn.addEventListener("click", () => {
   document.getElementById("pomodoro-session").value = "";
   document.getElementById("short-session").value = "";
   document.getElementById("long-session").value = "";
+  main.style.backgroundColor = colorInput.value;
 });
 
 if (Notification.permission === "default") {
