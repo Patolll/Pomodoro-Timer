@@ -468,7 +468,7 @@ select {
 @keyframes remove {
   to {
     opacity: 0;
-    transform: translateX(-50%);
+    transform: translatex(-50%);
   }
 }
 .remove-animation {

@@ -58,6 +58,19 @@ confirmBtn.addEventListener("click", () => {
   document.getElementById("long-session").value = "";
 });
 
+if (Notification.permission === "default") {
+  Notification.requestPermission();
+}
+function showNotification(message, iconFile) {
+  if (Notification.permission === "granted") {
+    let notif = new Notification("Pomodoro Timer", {
+      body: message,
+      icon: iconFile,
+    });
+    setTimeout(() => notif.close(), 3000);
+  }
+}
+
 let startBtn = document.getElementById("startBtn");
 startBtn.addEventListener("click", start);
 
@@ -127,17 +140,21 @@ function nextSession() {
     document.getElementById("pomodoroCount").textContent = pomodoro;
     if (pomodoro % 4 === 0) {
       remainingTime = longTime * 60;
+      showNotification("Time for a longer break!", "long-break.svg");
     } else {
       remainingTime = shortTime * 60;
+      showNotification("Time for a break!", "break.svg");
     }
   } else if (document.querySelector(".short.workingBtn")) {
     shortBreak++;
     document.getElementById("shortBreakCount").textContent = shortBreak;
     remainingTime = pomodoroTime * 60;
+    showNotification("Time to focus!", "work.svg");
   } else if (document.querySelector(".long.workingBtn")) {
     longBreak++;
     document.getElementById("longBreakCount").textContent = longBreak;
     remainingTime = pomodoroTime * 60;
+    showNotification("Time to focus!", "work.svg");
   }
   pomodoroTimer.textContent = formatTime(remainingTime);
 
